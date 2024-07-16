@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import logo from '/bkash.png'
+import logo from '/logo.jpg'
 
 const Home = () => {
     return (
         <div className="min-h-screen flex flex-col justify-center space-y-10">
       {/* Top Bar with Logo */}
       <div className="w-full p-4 flex justify-center">
-        <img src={logo} alt="bKash Logo" className="h-20" />
+        <img src={logo} alt="Zcash Logo" className="h-20" />
       </div>
 
       {/* Middle Section with Buttons */}

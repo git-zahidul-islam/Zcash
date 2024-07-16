@@ -1,12 +1,15 @@
+// exit
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+// exit
 import useAuth from "../../hooks/useAuth";
 import fingerprint from "../../assets/fingerprient.png";
 import { useState } from "react";
 
 const SignUp = () => {
+  // exit
   const axiosPublic = useAxiosPublic();
   const { userCreate, userUpdateProfile } = useAuth();
   const navigate = useNavigate();
@@ -17,43 +20,19 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
+  // exit
 
-  const handleSignUp = (data) => {
+  const handleSignUp = async(data) => {
     const name = data?.name;
     const email = data?.email;
     const password = data?.password;
     const checkRole = isChecked ? 'Agent' : 'User';
 
+    // ata mongodb
     console.log(name, email, password, checkRole);
 
-    // userCreate(email, password)
-    //     .then(result => {
-    //         console.log(result.user);
-
-    //         userUpdateProfile(name, photo)
-    //             .then(() => {
-    //                 console.log("photo update");
-    //                 // const userInfo = {
-    //                 //     name: name,
-    //                 //     email: email,
-    //                 // }
-    //                 // axiosPublic.post('/users', userInfo)
-    //                 //     .then(res => {
-    //                 //         if (res.data.insertedId) {
-    //                 //             Swal.fire({
-    //                 //                 title: "Good job!",
-    //                 //                 text: "login successfully!",
-    //                 //                 icon: "success"
-    //                 //             });
-    //                 //         }
-    //                 //     })
-    //             })
-    //             .catch(error => console.error(error))
-    //         navigate('/')
-    //     })
-    //     .catch(error => {
-    //         console.error(error);
-    //     })
+    const signUp = await axiosPublic.post('/users',data )
+    console.log(signUp);
   };
 
   return (
@@ -68,7 +47,7 @@ const SignUp = () => {
         <div className="space-y-16">
           <div className="space-y-6">
             <div className="flex justify-between">
-              <img src="/bkash.png" alt="" className="w-10" />
+              <img src="/logo.jpg" alt="" className="w-10" />
               <div className="w-10 h-10 bg-red-400/80"></div>
             </div>
             <div>
@@ -127,7 +106,7 @@ const SignUp = () => {
               <label>{isChecked ? 'Agent' : 'User'}</label>
               </div>
             </div>
-            <p className="text-[#DF146E]">পিং ভুলে গিয়েছেন ? পিন রিসেট করুন</p>
+            <p className="text-[#DF146E]">পিন ভুলে গিয়েছেন ? পিন রিসেট করুন</p>
           </div>
           <div className="flex justify-end">
             <input

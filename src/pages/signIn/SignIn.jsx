@@ -1,16 +1,6 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import SocialLogin from "../../components/socialLogin/SocialLogin";
 import fingerprint from "../../assets/fingerprient.png";
 
 const SignIn = () => {
-  const [disabled, setDisabled] = useState(true);
-  const { loginUser } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
-  // console.log("user login for items",location.state);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -43,7 +33,7 @@ const SignIn = () => {
         <div className="space-y-40">
           <div className="space-y-6">
             <div className="flex justify-between">
-              <img src="/bkash.png" alt="" className="w-10" />
+              <img src="/logo.jpg" alt="" className="w-10" />
               <div className="w-10 h-10 bg-red-400/80"></div>
             </div>
             <div>

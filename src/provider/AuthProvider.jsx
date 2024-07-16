@@ -10,41 +10,34 @@ const auth = getAuth(app)
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState()
     const [loading, setLoading] = useState(true)
-    const googleProvider = new GoogleAuthProvider();
     const axiosPublic = useAxiosPublic()
 
 
     // all sign in and login
-    const userCreate = (email, password) => {
-        setLoading(true)
-        return createUserWithEmailAndPassword(auth, email, password)
+    const userCreate = async (email, password, number) => {
+        const data = {email,password,number}
+        // setLoading(true)
+        const signUp = await axiosPublic.post('/user',data )
+        return signUp;
     }
     const loginUser = (email, password) => {
         setLoading(true)
-        return signInWithEmailAndPassword(auth, email, password)
+        return 
     }
-    const googleLogin = () => {
-        setLoading(true)
-        return signInWithPopup(auth, googleProvider)
-
-    }
+    
     // logout
     const logout = () => {
-        setLoading(true)
-        return signOut(auth)
+        
     }
-    const userUpdateProfile = (name, photo) => {
-        return updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photo
-        })
-    }
+    
 
     // observer
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
             setLoading(false)
+
+
             // TODO: enable if and else
             // if (currentUser) {
             //     // check user and fetch data
@@ -76,8 +69,6 @@ const AuthProvider = ({ children }) => {
         userCreate,
         loginUser,
         logout,
-        googleLogin,
-        userUpdateProfile
     }
     return (
         <AuthContext.Provider value={authInfo}>
