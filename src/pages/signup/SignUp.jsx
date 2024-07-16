@@ -1,113 +1,145 @@
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
-import SocialLogin from "../../components/socialLogin/SocialLogin";
+import fingerprint from "../../assets/fingerprient.png";
+import { useState } from "react";
 
 const SignUp = () => {
-    const axiosPublic = useAxiosPublic()
-    const { userCreate, userUpdateProfile } = useAuth()
-    const navigate = useNavigate()
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm()
+  const axiosPublic = useAxiosPublic();
+  const { userCreate, userUpdateProfile } = useAuth();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const [isChecked, setIsChecked] = useState(false);
 
+  const handleSignUp = (data) => {
+    const name = data?.name;
+    const email = data?.email;
+    const password = data?.password;
+    const checkRole = isChecked ? 'Agent' : 'User';
 
-    const handleSignUp = (data) => {
-        const name = data?.name
-        const email = data?.email
-        const password = data?.password
-        const photo = data?.photo
+    console.log(name, email, password, checkRole);
 
-        console.log(name,email,password,photo);
-        
-        userCreate(email, password)
-            .then(result => {
-                console.log(result.user);
-                userUpdateProfile(name, photo)
-                    .then(() => {
-                        console.log("photo update");
-                        // const userInfo = {
-                        //     name: name,
-                        //     email: email,
-                        // }
-                        // axiosPublic.post('/users', userInfo)
-                        //     .then(res => {
-                        //         if (res.data.insertedId) {
-                        //             Swal.fire({
-                        //                 title: "Good job!",
-                        //                 text: "login successfully!",
-                        //                 icon: "success"
-                        //             });
-                        //         }
-                        //     })
-                    })
-                    .catch(error => console.error(error))
-                navigate('/')
-            })
-            .catch(error => {
-                console.error(error);
-            })
-    }
+    // userCreate(email, password)
+    //     .then(result => {
+    //         console.log(result.user);
 
+    //         userUpdateProfile(name, photo)
+    //             .then(() => {
+    //                 console.log("photo update");
+    //                 // const userInfo = {
+    //                 //     name: name,
+    //                 //     email: email,
+    //                 // }
+    //                 // axiosPublic.post('/users', userInfo)
+    //                 //     .then(res => {
+    //                 //         if (res.data.insertedId) {
+    //                 //             Swal.fire({
+    //                 //                 title: "Good job!",
+    //                 //                 text: "login successfully!",
+    //                 //                 icon: "success"
+    //                 //             });
+    //                 //         }
+    //                 //     })
+    //             })
+    //             .catch(error => console.error(error))
+    //         navigate('/')
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //     })
+  };
 
-
-    return (
-        <div className="hero min-h-screen bg-base-200">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-                <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold">Register now!</h1>
-                    <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-                </div>
-                <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                    <form onSubmit={handleSubmit(handleSignUp)} className="card-body">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Name</span>
-                            </label>
-                            <input type="text" {...register("name", { required: true })} name="name" placeholder="name" className="input input-bordered" />
-                            {errors.name && <span className="text-red-400">This field is required</span>}
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Photo url</span>
-                            </label>
-                            <input type="text" {...register("photo", { required: true })} name="photo" placeholder="photo url" className="input input-bordered" />
-                            {errors.photo && <span className="text-red-400">This field is required</span>}
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Email</span>
-                            </label>
-                            <input type="email" name="email" {...register("email", { required: true })} placeholder="email" className="input input-bordered" />
-                            {errors.email && <span className="text-red-400">This field is required</span>}
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Password</span>
-                            </label>
-                            <input type="password" name="password" {...register("password", { required: true, maxLength: 16, minLength: 6, pattern: /(?=.*\d)(?=.*[a-zA-Z])/ })} placeholder="password" className="input input-bordered" />
-                            <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-                            </label>
-                            {errors.password?.type === 'required' && <span className="text-red-400">This field is required</span>}
-                            {errors.password?.type === 'maxLength' && <span className="text-red-400">use password maximum 16 character</span>}
-                            {errors.password?.type === 'minLength' && <span className="text-red-400">use password minimum 6 character</span>}
-                            {errors.password?.type === 'pattern' && <span className="text-red-400">one uppercase , one lowercase and one digite</span>}
-                        </div>
-                        <div className="form-control mt-6">
-                            <input className="btn btn-primary" type="submit" value="SignUp" />
-                        </div>
-                    </form>
-                    <SocialLogin></SocialLogin>
-                </div>
+  return (
+    <div className="min-h-screen px-4 space-y-20">
+      <div className="flex justify-end pt-5">
+        <h5 className="text-red-500/75 border-[1px] px-3 py-2 border-red-500/75 rounded-full">
+          English
+        </h5>
+      </div>
+      {/* form start */}
+      <form onSubmit={handleSubmit(handleSignUp)}>
+        <div className="space-y-16">
+          <div className="space-y-6">
+            <div className="flex justify-between">
+              <img src="/bkash.png" alt="" className="w-10" />
+              <div className="w-10 h-10 bg-red-400/80"></div>
             </div>
+            <div>
+              <p className="text-xl w-56">আপনার বিকাশ একাউন্টে লগ ইন করুন</p>
+            </div>
+            {/* name */}
+            <div>
+              <p>আপনার নাম দিন</p>
+              <input
+                className=""
+                type="text"
+                name="name"
+                {...register("name", { required: true })}
+                id="acc-number"
+                placeholder="Zahid"
+              />
+            </div>
+            {/* number */}
+            <div>
+              <p>অ্যাকাউন্ট নাম্বার</p>
+              <input
+                className=""
+                type="text"
+                name="email"
+                {...register("email", { required: true })}
+                id="acc-number"
+                placeholder="+88017****"
+              />
+            </div>
+            {/* pin */}
+            <div className="flex justify-between items-center">
+              <div>
+                <p>বিকাশ পিন</p>
+                <input
+                  className=""
+                  type="text"
+                  name="pin"
+                  {...register("password", { required: true })}
+                  id="pin"
+                  placeholder="বিকাশ পিন নাম্বার দিন"
+                />
+              </div>
+              <div>
+                <img src={fingerprint} alt="fingerprint" className="w-16" />
+              </div>
+            </div>
+            <div>
+              <p>আপনি কি একাউন্ট করতে চান</p>
+              <div className="flex gap-4 items-center">
+              <input
+                type="checkbox"
+                className="toggle block"
+                onChange={(e)=>setIsChecked(e.target.checked)}
+                checked={isChecked}
+              />
+              <label>{isChecked ? 'Agent' : 'User'}</label>
+              </div>
+            </div>
+            <p className="text-[#DF146E]">পিং ভুলে গিয়েছেন ? পিন রিসেট করুন</p>
+          </div>
+          <div className="flex justify-end">
+            <input
+              className="bg-red-400 rounded-2xl p-2"
+              type="submit"
+              value="Login"
+            />
+          </div>
         </div>
-    );
+      </form>
+    </div>
+  );
 };
 
 export default SignUp;

@@ -5,8 +5,8 @@ import NavBer from "../shared/navBer/NavBer";
 
 const Root = () => {
     return (
-        <div className="w-full">
-            <NavBer></NavBer>
+        <div className="lg:w-[60%] md:w-[60%] w-full mx-auto">
+            {/* <NavBer></NavBer> */}
             <Outlet></Outlet>
         </div>
     );

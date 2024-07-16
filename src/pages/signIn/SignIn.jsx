@@ -1,95 +1,90 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import useAuth from "../../hooks/useAuth";
 import SocialLogin from "../../components/socialLogin/SocialLogin";
-
+import fingerprint from "../../assets/fingerprient.png";
 
 const SignIn = () => {
-    const [disabled, setDisabled] = useState(true)
-    const { loginUser } = useAuth()
-    const navigate = useNavigate()
-    const location = useLocation()
-    const from = location.state?.from?.pathname || "/";
-    // console.log("user login for items",location.state);
+  const [disabled, setDisabled] = useState(true);
+  const { loginUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  // const from = location.state?.from?.pathname || "/";
+  // console.log("user login for items",location.state);
 
-    useEffect(() => {
-        loadCaptchaEnginge(6);
-    }, [])
-
-    const handleLogin = (e) => {
-        e.preventDefault()
-        const form = e.target;
-        const email = form.email.value;
-        const password = form.password.value;
-        const userInfo = { email, password }
-        console.log(userInfo);
-        loginUser(email, password)
-            .then((result) => {
-                console.log(result.user);
-                navigate(from, { replace: true })
-            })
-            .catch(error => {
-                const errorMessage = error.message;
-                console.log(errorMessage);
-            })
-    }
-
-    const handleValidCaptcha = (e) => {
-        const data = e.target.value;
-        if (validateCaptcha(data)) {
-            setDisabled(false)
-        }
-        else {
-            setDisabled(true)
-        }
-    }
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const userInfo = { email, password };
+    console.log(userInfo);
 
 
-    return (
-        <div className="hero min-h-screen bg-base-200">
-            <div className="hero-content flex-col lg:flex-row">
-                <div className="card md:w-1/2 w-full max-w-sm shadow-2xl bg-base-100">
-                    <form onSubmit={handleLogin} className="card-body">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Email</span>
-                            </label>
-                            <input type="email" name="email" placeholder="email" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Password</span>
-                            </label>
-                            <input type="password" name="password" placeholder="password" className="input input-bordered" required />
-                            <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-                            </label>
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <LoadCanvasTemplate />
-                            </label>
-                            <input onBlur={handleValidCaptcha} type="text" name="captcha" placeholder="Type your right captcha" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control mt-6">
-                            {/* TODO: make disabled true */}
-                            <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
-                        </div>
-                        <small>New here <Link className="text-base font-medium text-indigo-700" to={'/sign-up'}>Create an account</Link></small>
-                    </form>
-                    <div className="divider px-2"></div>
-                    <div className="flex justify-center">
-                        <SocialLogin></SocialLogin>
-                    </div>
-                </div>
-                <div className="text-center w-1/2 lg:text-left">
-                    <input type="submit" className="text-5xl font-bold" value="login" />
-                    <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-                </div>
+    // loginUser(email, password)
+    //   .then((result) => {
+    //     console.log(result.user);
+    //     navigate(from, { replace: true });
+    //   })
+    //   .catch((error) => {
+    //     const errorMessage = error.message;
+    //     console.log(errorMessage);
+    //   });
+  };
+
+  return (
+    <div className="min-h-screen px-4 space-y-20">
+      <div className="flex justify-end pt-5">
+        <h5 className="text-red-500/75 border-[1px] px-3 py-2 border-red-500/75 rounded-full">
+          English
+        </h5>
+      </div>
+      <form onSubmit={handleLogin} action="">
+        <div className="space-y-40">
+          <div className="space-y-6">
+            <div className="flex justify-between">
+              <img src="/bkash.png" alt="" className="w-10" />
+              <div className="w-10 h-10 bg-red-400/80"></div>
             </div>
+            <div>
+              <p className="text-xl w-56">আপনার বিকাশ একাউন্টে লগ ইন করুন</p>
+            </div>
+            {/* number */}
+            <div>
+              <p>অ্যাকাউন্ট নাম্বার</p>
+              <input
+                className=""
+                type="text"
+                name="email"
+                id="acc-number"
+                placeholder="+88017**** / email"
+              />
+            </div>
+            {/* pin */}
+            <div className="flex justify-between items-center">
+              <div>
+                <p>বিকাশ পিন</p>
+                <input
+                  className=""
+                  type="text"
+                  name="password"
+                  id="pin"
+                  placeholder="বিকাশ পিন নাম্বার দিন"
+                />
+              </div>
+              <div>
+                <img src={fingerprint} alt="fingerprint" className="w-16" />
+              </div>
+            </div>
+            <p className="text-[#DF146E]">পিং ভুলে গিয়েছেন ? পিন রিসেট করুন</p>
+          </div>
+          <div className="flex justify-end">
+            <input type="submit" value="Login" className="bg-red-400 rounded-2xl p-2"/>
+          </div>
         </div>
-    );
+      </form>
+    </div>
+  );
 };
 
 export default SignIn;
