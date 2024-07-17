@@ -15,24 +15,33 @@ const SignUp = () => {
   const navigate = useNavigate();
   const {
     register,
+    reset,
     handleSubmit,
     watch,
     formState: { errors },
+    
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
+  const [error,setError] = useState([])
   // exit
 
   const handleSignUp = async(data) => {
     const name = data?.name;
     const email = data?.email;
     const password = data?.password;
+    const reg  = /^\d{5}$/
+    if(!reg.test(password)){
+      return setError('Give 5 digit only number')
+    }
     const checkRole = isChecked ? 'Agent' : 'User';
-
     // ata mongodb
-    console.log(name, email, password, checkRole);
-
-    const signUp = await axiosPublic.post('/users',data )
-    console.log(signUp);
+    const userInfo = {name, email, password, checkRole}
+    const signUp = await axiosPublic.post('/users',userInfo )
+    console.log("the data is",signUp.data)
+    if(signUp.data) {
+      setError('')
+      reset()
+    }
   };
 
   return (
@@ -54,6 +63,9 @@ const SignUp = () => {
               <p className="text-xl w-56">আপনার বিকাশ একাউন্টে লগ ইন করুন</p>
             </div>
             {/* name */}
+            <div>
+              <p className="text-red-400">{error}</p>
+            </div>
             <div>
               <p>আপনার নাম দিন</p>
               <input

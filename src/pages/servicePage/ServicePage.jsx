@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
 import NavBer from "../../shared/navBer/NavBer";
 
 const services = [
@@ -19,6 +21,15 @@ const services = [
 ];
 
 const ServicePage = () => {
+  const {user} = useAuth()
+
+  useEffect(() => {
+    if (user) {
+      console.log('Logged in user:', user);
+      // ইউজারের ডাটার ভিত্তিতে কিছু করতে পারো
+    }
+  }, [user]);
+
   return (
     <div>
       <NavBer />

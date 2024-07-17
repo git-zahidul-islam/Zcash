@@ -24,7 +24,7 @@ const NavBer = () => {
             <div className="flex gap-5 items-center">
                 <div className="w-12 h-12 rounded-full bg-slate-600"></div>
                 <div>
-                    <input className="p-1 border-[1px] rounded-2xl w-36" type="text" name="balance" id="balance" defaultValue={100} />
+                    <input className="p-1 border-[1px] rounded-2xl w-36 text-black" type="text" name="balance" id="balance" defaultValue={user?.name} />
                 </div>
             </div>
             {/* nav */}

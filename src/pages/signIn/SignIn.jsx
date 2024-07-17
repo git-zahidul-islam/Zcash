@@ -1,8 +1,14 @@
 import fingerprint from "../../assets/fingerprient.png";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  const navigation = useNavigate()
+  const axiosPublic = useAxiosPublic();
+  const {loginUser,user} = useAuth()
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
@@ -10,17 +16,24 @@ const SignIn = () => {
     const userInfo = { email, password };
     console.log(userInfo);
 
+    const result = await loginUser(email,password)
+    if(result){
+      console.log("signin page",result);
+      navigation('/service-page')
+    }
+    else{
+      alert('have problems')
+    }
 
-    // loginUser(email, password)
-    //   .then((result) => {
-    //     console.log(result.user);
-    //     navigate(from, { replace: true });
-    //   })
-    //   .catch((error) => {
-    //     const errorMessage = error.message;
-    //     console.log(errorMessage);
-    //   });
+// login
+    // const result = await axiosPublic.get(`/user?email=${email}&password=${password}`)
+    // console.log(result.data); 
+    // if(result.data.email){
+    //   navigation('/service-page')
+    // }
   };
+
+  console.log(user);
 
   return (
     <div className="min-h-screen px-4 space-y-20">
