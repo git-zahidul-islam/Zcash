@@ -1,7 +1,10 @@
 import { createContext, useEffect, useState } from "react";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { getAuth} from "firebase/auth";
 import { app } from "../firebase/firebase.config";
 import useAxiosPublic from '../hooks/useAxiosPublic'
+// test
+import { jwtDecode } from "jwt-decode";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 
 
@@ -13,27 +16,47 @@ const AuthProvider = ({ children }) => {
     const axiosPublic = useAxiosPublic()
 
 
-
+// login user
     const loginUser = async (email, password) => {
-          const result = await axiosPublic.get(`/user?email=${email}&password=${password}`);
-          if (result.data.email) {
-            setUser(result.data);
-            console.log(result.data);
-            return result;
-          }
+        // loading
+        setLoading(true)
+        const result = await axiosPublic.post(`/user?email=${email}&password=${password}`);
+        if (result.data.token) {
+        // লোকাল স্টোরেজে টোকেন সংরক্ষণ
+        localStorage.setItem('token', result.data.token);
+        // JWT টোকেন ডিকোড করা
+        const decodedTokenBB = jwtDecode(result.data.token);
+        console.log(decodedTokenBB);
+        setUser(decodedTokenBB);
+        return result;
+    }
+    };
+    // লোকাল স্টোরেজ থেকে টোকেন নিয়ে ডিকোড করা এবং স্টেট আপডেট করা
+    const checkUser = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUser(decodedToken);
+    }
     };
 
-    
+    useEffect(() => {
+        checkUser();
+    }, []);
     // logout
-    const logout = () => {
-        
-    }
-    
+    // const logoutUser = () => {
+    //     localStorage.removeItem('token');
+    //     setUser(null);
+    //     console.log('User logged out');
+    // };
+
+
     const authInfo = {
         user,
         loading,
+        setUser,
         loginUser,
-        logout,
+        // logoutUser,
     }
     return (
         <AuthContext.Provider value={authInfo}>

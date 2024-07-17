@@ -1,13 +1,17 @@
 import fingerprint from "../../assets/fingerprient.png";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  const navigation = useNavigate()
+  const navigate = useNavigate()
   const axiosPublic = useAxiosPublic();
   const {loginUser,user} = useAuth()
+    const location = useLocation();
+    // i will use this when have Private router
+    // const from = location.state?.from?.pathname || "/";
 
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -15,22 +19,15 @@ const SignIn = () => {
     const password = form.password.value;
     const userInfo = { email, password };
     console.log(userInfo);
-
+    
     const result = await loginUser(email,password)
     if(result){
       console.log("signin page",result);
-      navigation('/service-page')
+      navigate('/service-page');
     }
     else{
       alert('have problems')
     }
-
-// login
-    // const result = await axiosPublic.get(`/user?email=${email}&password=${password}`)
-    // console.log(result.data); 
-    // if(result.data.email){
-    //   navigation('/service-page')
-    // }
   };
 
   console.log(user);

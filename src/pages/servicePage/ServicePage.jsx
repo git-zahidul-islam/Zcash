@@ -23,12 +23,7 @@ const services = [
 const ServicePage = () => {
   const {user} = useAuth()
 
-  useEffect(() => {
-    if (user) {
-      console.log('Logged in user:', user);
-      // ইউজারের ডাটার ভিত্তিতে কিছু করতে পারো
-    }
-  }, [user]);
+  console.log(user?.user);
 
   return (
     <div>
