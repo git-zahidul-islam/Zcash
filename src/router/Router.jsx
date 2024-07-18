@@ -7,6 +7,7 @@ import SignIn from "../pages/signIn/SignIn";
 import SignUp from "../pages/signup/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import ServicePage from "../pages/servicePage/ServicePage";
+import SendMoney from "../components/SendMoney";
 
 export const router = createBrowserRouter([
     {
@@ -30,9 +31,14 @@ export const router = createBrowserRouter([
                 element: <ServicePage/>
             },
             {
+                path: '/send-money',
+                element: <SendMoney/>
+            },
+            {
                 path: '/other',
                 element: <PrivateRoute></PrivateRoute>
             }
-        ]
+        ],
+
     },
 ]);

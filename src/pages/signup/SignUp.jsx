@@ -11,7 +11,7 @@ import { useState } from "react";
 const SignUp = () => {
   // exit
   const axiosPublic = useAxiosPublic();
-  const { userCreate, userUpdateProfile } = useAuth();
+  const {logoutUser} = useAuth()
   const navigate = useNavigate();
   const {
     register,
@@ -41,6 +41,8 @@ const SignUp = () => {
     if(signUp.data) {
       setError('')
       reset()
+      navigate('/sign-in')
+      logoutUser()
     }
   };
 

@@ -43,12 +43,13 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         checkUser();
     }, []);
+
     // logout
-    // const logoutUser = () => {
-    //     localStorage.removeItem('token');
-    //     setUser(null);
-    //     console.log('User logged out');
-    // };
+    const logoutUser = () => {
+        localStorage.removeItem('token');
+        setUser(null);
+        console.log('User logged out');
+    };
 
 
     const authInfo = {
@@ -56,7 +57,7 @@ const AuthProvider = ({ children }) => {
         loading,
         setUser,
         loginUser,
-        // logoutUser,
+        logoutUser,
     }
     return (
         <AuthContext.Provider value={authInfo}>
